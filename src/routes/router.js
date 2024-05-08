@@ -1,51 +1,109 @@
 const router = require('express').Router();
-const fs = require('fs');
-const pdf = require('html-pdf');
-const ejs = require('ejs');
+const Handlebars = require('handlebars');
+const fs = require('node:fs');
+const path = require('node:path');
+// const puppeteer = require('puppeteer'); 
 
-router.get('/', (req, res) => {
-    res.render('template', templateVariable);
-});
+const templatePath = path.resolve(process.cwd(), 'public')
 
-const base = ('file:///' + process.cwd() + '/public/').replace(/\\/g, '/');
+const jsreport = require('@jsreport/jsreport-core')(
+    {
+        rootDirectory: templatePath,
+        logger: {
+            console: {
+              transport: "console",
+              level: "debug"
+            },
+            file: {
+              transport: "file",
+              level: "info",
+              filename: "logs/reporter.log"
+            },
+            error: {
+              transport: "file",
+              level: "error",
+              filename: "logs/error.log"
+            }
+          },
+        store: {
+            provider: 'fs'
+        },
+        extensions: {
+            fs: {
+                dataDirectory: templatePath
+            }
+        },
+        autoTempCleanup: true,
+        useExtensionsLocationCache: false
+    }
+)
+jsreport.use(require('@jsreport/jsreport-chrome-pdf')())
+jsreport.use(require('@jsreport/jsreport-handlebars')())
+jsreport.use(require('@jsreport/jsreport-fs-store')({
+    dataDirectory: templatePath
+}))
+
+jsreport.init()
 
 const templateVariable = {
     title: 'HTML-PDF Example',
     address: '1234 Main St',
     city: 'San Francisco',
     date: '1/1/2021',
-    author: 'Fazanwolf',
-    base: base
+    author: 'Fazanwolf'
 }
 
-router.get('/dl', (req, res) => {
-    // res.render('dl', { pubPath: base })
-
-    const options = {
-        format: 'Letter',
-        border: {
-            top: '0.5in',
-            right: '0.5in',
-            bottom: '0.5in',
-            left: '0.5in'
-        },
-        base: base,
-        localUrlAccess: true
-    };
-
-    const compiled = ejs.compile(fs.readFileSync('./public/template.html', 'utf8'), options);
-
-    const html = compiled(templateVariable);
-    pdf.create(html).toBuffer((error, buffer) => {
-        if (error) {
-            console.error(error);
-            res.status(500).send('An error occurred while generating the PDF');
-        }
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=generated.pdf');
-        res.end(buffer);
-    });
+router.get('/', (req, res) => {
+    res.render('template', templateVariable);
 });
 
+router.get('/dl', async (req, res) => {
+    console.log(templatePath);
+
+    const template = fs.readFileSync(templatePath + '/template.handlebars', 'utf8');
+
+    try {
+        await jsreport.documentStore.collection('templates').insert({
+            name: 'template',
+            content: template,
+            engine: 'handlebars',
+            recipe: 'chrome-pdf'
+        });
+    } catch (e) {
+        console.log(e);
+    }
+
+    try {
+        await jsreport.documentStore.collection('templates').insert({
+            name: 'style.css',
+            content: fs.readFileSync(templatePath + '/style.css', 'utf8'),
+        })
+    } catch (e) {
+        console.log(e);
+    }
+
+    const result = await jsreport.render({
+        template: {
+            name: 'template',
+            engine: 'handlebars',
+            recipe: 'chrome-pdf'
+        },
+        data: templateVariable
+    });
+
+    // const browser = await puppeteer.launch({ headless: true });
+    // const page = await browser.newPage();
+    // page.setContent(template);
+    // const pdf = await page.pdf({ format: 'A4' });
+    // await browser.close();
+
+    // const buffer = await streamToBuffer(stream);
+
+    // console.log('Stream: ', buffer  );
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=template.pdf');
+    res.end(result.content);
+});
 
 module.exports = router;

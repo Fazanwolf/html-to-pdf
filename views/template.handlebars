@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{!-- <style>
+            @import url('https://fonts.googleapis.com/css2?family=Jacquard+12+Charted&family=Jacquard+24&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Jacquard+12+Charted&family=Jacquard+24&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+            .Info {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            font-family: "Roboto";
+            }
+
+            p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            font-family: "Jacquard 24";
+            }
+        </style> --}}
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+        <table>
+            <td>
+                <img src="/banner.jpg" alt="HTML to PDF" width="300" height="940">
+            </td>
+            <td>
+                <h1>Test: {{title}}</h1>
+                <a>Convert HTML to PDF with Node</a>
+                <div id="Info">
+                    <h2 style="font-family: Roboto;">Information</h2>
+                    <table class="Info">
+                        <tr>
+                            <th>Address</th>
+                            <th>{{address}}</th>
+                        </tr>
+                        <tr>
+                            <td>City</td>
+                            <td>{{city}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{{date}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="content">
+                    <h2>Content</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras egestas, ante id consequat hendrerit, augue ligula rutrum turpis, sit amet blandit velit urna vel turpis. Etiam egestas lacinia diam, nec dictum nisi viverra ut. Mauris commodo, dolor ut tincidunt blandit, sem nulla feugiat odio, id commodo sapien tellus semper libero. Morbi a consectetur elit, non consectetur neque. Aenean molestie urna sit amet est scelerisque efficitur. Vestibulum accumsan convallis dui, at molestie magna ultrices eu. Fusce at dolor eget nibh hendrerit gravida. Morbi a condimentum metus, nec malesuada nunc. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut tristique sodales turpis, vel elementum diam auctor dapibus. Cras a iaculis arcu.</p>
+                    <p>Praesent dignissim massa sit amet sapien rutrum hendrerit. Aliquam sit amet lorem eu metus pulvinar sollicitudin. In mi dui, vulputate et varius ut, malesuada eget turpis. Phasellus at ante at magna maximus commodo at eget odio. Ut eu cursus nulla, id ultrices nibh. Integer sit amet metus dignissim, iaculis neque sit amet, efficitur quam. Nullam finibus quam non dui venenatis, eu pharetra est vulputate. Maecenas lacinia arcu nec lacus ornare, ut laoreet augue commodo. Fusce iaculis at nisi quis scelerisque. Integer vestibulum odio non nunc sollicitudin, et suscipit eros vestibulum. Fusce elementum dui et justo commodo pellentesque. Praesent condimentum pellentesque orci, suscipit condimentum nisl aliquet eget.</p>
+                    <p>Mauris pharetra turpis vel erat ultricies aliquet. Aenean at blandit urna, sit amet tincidunt tortor. Vestibulum eget elit sodales, sagittis dui sed, finibus sem. Vivamus eleifend, justo sed imperdiet venenatis, augue quam convallis mauris, et pharetra ligula risus et libero. Suspendisse nec vestibulum felis. Ut et velit molestie, ultrices leo eu, mattis mi. Suspendisse eget sollicitudin quam. Sed fermentum quis urna sit amet ullamcorper. Sed varius sodales neque, a sollicitudin dui feugiat at.</p>
+                    <cite>{{author}}</cite>
+                </div>
+            </td>
+        </table>
+    </body>
+</html>

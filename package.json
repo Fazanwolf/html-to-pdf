@@ -14,10 +14,19 @@
         "url": ""
     },
     "dependencies": {
+        "@jsreport/jsreport-chrome-pdf": "^4.1.0",
+        "@jsreport/jsreport-core": "^4.2.2",
+        "@jsreport/jsreport-fs-store": "^4.0.3",
+        "@jsreport/jsreport-handlebars": "^4.0.1",
+        "@types/jsreport-core": "^2.0.9",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
-        "ejs": "^3.1.10",
         "express": "^4.19.2",
-        "html-pdf": "^3.0.1"
+        "express-handlebars": "^7.1.2",
+        "handlebars": "^4.7.8",
+        "puppeteer": "^22.8.0"
+    },
+    "devDependencies": {
+        "@types/jsreport": "^2.9.4"
     }
 }
