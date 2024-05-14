@@ -4,7 +4,7 @@ const path = require('node:path');
 class JsReportHandler
 {
     _jsReport;
-    tmpPath = path.resolve(process.cwd(), 'tmp')
+    jsReportPath = path.resolve(process.cwd(), 'jsreport')
 
     _recipe = 'chrome-pdf';
     _engine = 'handlebars';
@@ -71,8 +71,8 @@ class JsReportHandler
     config()
     {
         return {
-            rootDirectory: this.tmpPath,
-            tempDirectory: this.tmpPath,
+            rootDirectory: this.jsReportPath,
+            tempDirectory: this.jsReportPath,
             logger: {
                 console: {
                     transport: "console",
@@ -98,7 +98,7 @@ class JsReportHandler
                     allowLocalFilesAccess: true
                 },
                 fsStore: {
-                    dataDirectory: this.tmpPath
+                    dataDirectory: this.jsReportPath
                 }
             },
             autoTempCleanup: true,

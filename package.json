@@ -2,7 +2,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node index.js",
-        "jsreport:clear": "rm -rf tmp/*",
+        "jsreport:clear": "rm -rf jsreport/*",
         "start:dev": "node --watch index.js"
     },
     "name": "html-to-pdf",

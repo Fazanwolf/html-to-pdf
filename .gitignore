@@ -1,7 +1,7 @@
 node_modules
 .env
 pnpm-lock.yaml
-tmp/*
-!tmp/.gitkeep
+jsreport/*
+!jsreport/.gitkeep
 logs
 .idea
