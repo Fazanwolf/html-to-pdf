@@ -6,7 +6,7 @@ class JsReportHandler
     _jsReport;
     jsReportPath = path.resolve(process.cwd(), 'jsreport')
 
-    _recipe = 'chrome-pdf';
+    _recipe = 'phantom-pdf';
     _engine = 'handlebars';
 
     get recipe() {
@@ -34,8 +34,8 @@ class JsReportHandler
         // Initialize JsReport instance.
         this._jsReport = require('@jsreport/jsreport-core')(this.config());
         // Import chrome-pdf recipe.
-        this._jsReport.use(require('@jsreport/jsreport-chrome-pdf')({
-            waitForNetworkIdle: true,
+        this._jsReport.use(require('@jsreport/jsreport-phantom-pdf')({
+            // waitForNetworkIdle: true, Does not work with phantom-pdf
             waitForJS: true,
         }))
         // Import handlebars engine.
@@ -71,7 +71,7 @@ class JsReportHandler
     config()
     {
         return {
-            rootDirectory: this.jsReportPath,
+            rootDirectory: process.cwd(),
             tempDirectory: this.jsReportPath,
             logger: {
                 console: {
