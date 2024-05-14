@@ -1,41 +1,20 @@
 const router = require('express').Router();
-// const Handlebars = require('handlebars');
+const Handlebars = require('handlebars');
 const path = require('node:path');
+const fs = require('node:fs');
+const { Duplex } = require('node:stream');
+const puppeteer = require('puppeteer');
 
 const publicPath = path.resolve(process.cwd(), 'public');
-
-// Import JsReportHandler class.
-const JsReportHandler = require('../JsReportHandler');
-const report = new JsReportHandler();
-
-// Define assets.
-const assets = [
-    {
-        absolutePath: publicPath + '/style.css',
-        name: 'style.css',
-        isAsset: true
-    },
-    {
-        absolutePath: publicPath + '/banner.jpg',
-        name: 'banner.jpg',
-        isAsset: true
-    },
-    {
-        absolutePath: publicPath + '/template.handlebars',
-        name: 'template',
-        isAsset: false
-    }
-]
-
-// Initialize instance of JsReportHandler and create assets.
-report.init(assets);
 
 const templateVariable = {
     title: 'HTML-PDF Example',
     address: '1234 Main St',
     city: 'San Francisco',
     date: '1/1/2021',
-    author: 'Fazanwolf'
+    author: 'Fazanwolf',
+    css: fs.readFileSync(publicPath + '/style.css', 'utf8'),
+    cssPath: publicPath + '/style.css',
 }
 
 router.get('/', (req, res) => {
@@ -43,33 +22,36 @@ router.get('/', (req, res) => {
 });
 
 router.get('/dl-template', async (req, res) => {
-    try {
-        const result = await report.render("template", templateVariable);
+    const template = Handlebars.compile(fs.readFileSync(publicPath + '/template_brute.handlebars', 'utf8'))(templateVariable);
 
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=template.pdf');
-        res.end(result.content);
-    } catch (e) {
-        console.log(e);
-    }
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ["--no-sandbox"]
+    });
+    const page = await browser.newPage();
+
+    await page.goto("data:text/html;charset=UTF-8," + template, { waitUntil: "networkidle2" });
+    // await page.waitForNavigation({waitUntil: 'networkidle2', networkIdleTimeout: 3000});
+
+    // await page.setContent(template, { waitUntil: "networkidle2" });
+
+    const pdf = await page.pdf({ format: 'A4', printBackground: true });
+
+    await page.close();
+    await browser.close();
+
+    // const pdfStream = new Duplex();
+    // pdfStream.push(pdf.toString());
+    // pdfStream.push(null);
+
+    // console.log(Readable.from(pdf));
+    res.setHeader('Content-Type', 'application/pdf');
+    res.send(pdf);
+
+    // res.setHeader('Content-Type', 'application/pdf');
+    // res.setHeader('Content-Disposition', 'attachment; filename=template.pdf');
+    // res.end(pdfStream);
+
 });
-
-// router.get('/dl-brute', async (req, res) => {
-//     const template = Handlebars.compile(fs.readFileSync(publicPath + '/template_brute.handlebars', 'utf8'))(templateVariable);
-//
-//     const result = await jsreport.render({
-//         template: {
-//             content: template,
-//             engine: 'handlebars',
-//             recipe: 'chrome-pdf'
-//         },
-//         data: templateVariable
-//     });
-//
-//     res.setHeader('Content-Type', 'application/pdf');
-//     res.setHeader('Content-Disposition', 'attachment; filename=template.pdf');
-//     res.end(result.content);
-// });
-
 
 module.exports = router;
