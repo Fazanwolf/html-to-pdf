@@ -1,9 +1,7 @@
 node_modules
 .env
 pnpm-lock.yaml
-public/*
-!public/style.css
-!public/template.handlebars
-!public/banner.jpg
+tmp/*
+!tmp/.gitkeep
 logs
 .idea

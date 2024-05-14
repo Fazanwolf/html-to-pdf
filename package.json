@@ -2,6 +2,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node index.js",
+        "jsreport:clear": "rm -rf tmp/*",
         "start:dev": "node --watch index.js"
     },
     "name": "html-to-pdf",
@@ -14,6 +15,7 @@
         "url": ""
     },
     "dependencies": {
+        "@jsreport/jsreport-assets": "^4.1.0",
         "@jsreport/jsreport-chrome-pdf": "^4.1.0",
         "@jsreport/jsreport-core": "^4.2.2",
         "@jsreport/jsreport-fs-store": "^4.0.3",
@@ -22,9 +24,7 @@
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
-        "express-handlebars": "^7.1.2",
-        "handlebars": "^4.7.8",
-        "puppeteer": "^22.8.0"
+        "express-handlebars": "^7.1.2"
     },
     "devDependencies": {
         "@types/jsreport": "^2.9.4"
