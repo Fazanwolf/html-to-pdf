@@ -1,9 +1,8 @@
 {
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node index.js",
-        "jsreport:clear": "rm -rf jsreport/*",
-        "start:dev": "node --watch index.js"
+        "start": "node app.js",
+        "start:dev": "node --watch index.js",
+        "start:pm2": "pm2 start index.js --name puppeteer"
     },
     "name": "html-to-pdf",
     "version": "1.0.0",
