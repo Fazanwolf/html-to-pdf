@@ -54,22 +54,4 @@ router.get('/dl-template', async (req, res) => {
     }
 });
 
-// router.get('/dl-brute', async (req, res) => {
-//     const template = Handlebars.compile(fs.readFileSync(publicPath + '/template_brute.handlebars', 'utf8'))(templateVariable);
-//
-//     const result = await jsreport.render({
-//         template: {
-//             content: template,
-//             engine: 'handlebars',
-//             recipe: 'chrome-pdf'
-//         },
-//         data: templateVariable
-//     });
-//
-//     res.setHeader('Content-Type', 'application/pdf');
-//     res.setHeader('Content-Disposition', 'attachment; filename=template.pdf');
-//     res.end(result.content);
-// });
-
-
 module.exports = router;
