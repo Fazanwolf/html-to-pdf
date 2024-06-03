@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const Handlebars = require('handlebars');
 const path = require('node:path');
 const fs = require('node:fs');
-const { Duplex } = require('node:stream');
+const Handlebars = require('handlebars');
 const puppeteer = require('puppeteer');
+
 
 const publicPath = path.resolve(process.cwd(), 'public');
 
